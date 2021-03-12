@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:high_chart/high_chart.dart';
-import 'package:credit_card/flutter_credit_card.dart';
-import 'package:credit_card/credit_card_form.dart';
-import 'package:credit_card/credit_card_model.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,170 +8,158 @@ class HomePage extends StatefulWidget {
 }
 
 class _CounterPage extends State<HomePage> {
+  String name = 'Elizabeth Gonzalez';
+  String balance = '34000';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
-      body: SingleChildScrollView(
-        child: _body(),
+      body: _body(),
+      bottomNavigationBar: _menu(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Colors.redAccent,
+        child: Icon(Icons.money_off),
       ),
-      floatingActionButton: _menu(),
-    );
-  }
-
-  Widget _appBar() {
-    return AppBar(
-      backgroundColor: Color.fromRGBO(12, 90, 190, 1),
-      toolbarHeight: 80,
-      actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.settings),
-          onPressed: () => {},
-        ),
-      ],
-      centerTitle: false,
-      title: Text('CONTROL BUDGET'),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
   Widget _body() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        Container(
-          // color: Color.fromRGBO(251, 234, 206, 1),
-          child: Column(
-            children: [
-              _balance(),
-              _group(),
-              _chart(),
-            ],
-          ),
-        ),
+        _balance(),
+        _chart(),
       ],
     );
   }
 
   Widget _balance() {
-    /*return Image(
-      image: AssetImage('assets/tarjeta.png'),
-      width: 250.0,
-    );*/
-    return Container(
-      width: 300,
-      height: 50,
-      child: Row(
-        children: <Widget>[
-          CreditCardWidget(
-            cardNumber: balance,
-            expiryDate: '',
-            cardHolderName: '',
-            cvvCode: '',
-            showBackView: false,
+    return Row(
+      children: [
+        Container(
+          padding: EdgeInsets.only(left: 30.0),
+          width: 300,
+          height: 150,
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(20.0),
           ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: CreditCardForm(
-                onCreditCardModelChange: onCreditCardModelChange,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                  width: 30.0,
+                  height: 30.0,
+                child: FaIcon(FontAwesomeIcons.ccVisa),
               ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _group() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 28),
-      margin: EdgeInsets.symmetric(vertical: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          // _balance(),
-          FloatingActionButton(
-              onPressed: () {},
-              backgroundColor: Colors.green,
-              child: Icon(Icons.account_balance_wallet)),
-        ],
-      ),
+              Text('340.000'),
+              Text('Eliza Pinguina')
+            ],
+          ),
+        ),
+        FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: Colors.green,
+          child: Icon(Icons.account_balance_wallet),
+        )
+      ],
     );
   }
 
   Widget _chart() {
-    return Image(
-      image: AssetImage('assets/chart.png'),
-      width: 250.0,
-    );
-    /* return Container(
-      child: HighCharts(
-        data: _chart_data,
-      ),
-    );*/
-  }
-
-  void onCreditCardModelChange(CreditCardModel creditCardModel) {
-    setState(() {
-      name = creditCardModel.cardHolderName;
-      balance = creditCardModel.cardNumber;
-    });
-  }
-
-  String name = 'Elizabeth Gonzalez';
-  String balance = '34000';
-
-  Widget _menu() {
-    return Container(
-      //color: Colors.pink,
-      height: 60,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          FloatingActionButton(
-              onPressed: () {},
-              backgroundColor: Colors.blue,
-              child: Icon(Icons.archive)),
-          FloatingActionButton(
-              onPressed: () {},
-              backgroundColor: Colors.red,
-              child: Icon(Icons.money_off)),
-          FloatingActionButton(
-              onPressed: () {},
-              backgroundColor: Colors.purple,
-              child: Icon(Icons.list)),
-        ],
-      ),
-    );
-  }
-
-  static const _chart_data = '''{
+    const _chart_data = '''{
       title: {
-          text: 'Combination chart'
+          text: ''
       },
       xAxis: {
           categories: ['Apples', 'Oranges', 'Pears', 'Bananas', 'Plums']
       },
       series: [{
-          type: 'pie',
-          name: 'Total consumption',
-          data: [{
-              name: 'Jane',
-              y: 13,
-              color: Highcharts.getOptions().colors[0] // Jane's color
-          }, {
-              name: 'John',
-              y: 23,
-              color: Highcharts.getOptions().colors[1] // John's color
-          }, {
-              name: 'Joe',
-              y: 19,
-              color: Highcharts.getOptions().colors[2] // Joe's color
-          }],
-          center: [100, 80],
-          size: 100,
-          showInLegend: false,
-          dataLabels: {
-              enabled: false
+          type: 'column',
+          name: 'Jane',
+          data: [3, 2, 1, 3, 4]
+      }, {
+          type: 'column',
+          name: 'John',
+          data: [2, 3, 5, 7, 6]
+      }, {
+          type: 'column',
+          name: 'Joe',
+          data: [4, 3, 3, 9, 0]
+      }, {
+          type: 'spline',
+          name: 'Average',
+          data: [3, 2.67, 3, 6.33, 3.33],
+          marker: {
+              lineWidth: 2,
+              lineColor: Highcharts.getOptions().colors[3],
+              fillColor: 'white'
           }
-        }]
+      }, 
+    ]
     }''';
+
+    return Container(
+      child: HighCharts(
+        data: _chart_data,
+      ),
+      width: 350,
+      height: 350,
+    );
+  }
+
+  Widget _menu() {
+    return BottomAppBar(
+      child: Container(
+        margin: EdgeInsets.only(left: 12.0, right: 12.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(
+              //update the bottom app bar view each time an item is clicked
+              onPressed: () {},
+              iconSize: 27.0,
+              icon: Icon(
+                Icons.home,
+                //darken the icon if it is selected or else give it a different color
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              iconSize: 27.0,
+              icon: Icon(
+                Icons.call_made,
+              ),
+            ),
+            //to leave space in between the bottom app bar items and below the FAB
+            SizedBox(
+              width: 50.0,
+            ),
+            IconButton(
+              onPressed: () {},
+              iconSize: 27.0,
+              icon: Icon(
+                Icons.call_received,
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              iconSize: 27.0,
+              icon: Icon(
+                Icons.settings,
+              ),
+            ),
+          ],
+        ),
+      ),
+      //to add a space between the FAB and BottomAppBar
+      shape: CircularNotchedRectangle(),
+      //color of the BottomAppBar
+      color: Colors.white,
+    );
+  }
 }
