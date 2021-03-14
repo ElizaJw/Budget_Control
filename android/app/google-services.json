@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "882989968175",
+    "project_id": "budgetcontrol-88675",
+    "storage_bucket": "budgetcontrol-88675.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882989968175:android:ccf8935b798d041c640fda",
+        "android_client_info": {
+          "package_name": "com.example.budget_control"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882989968175-e46a7vptgaaefiqf2l53ojsee0do74mm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAS2OUHyOlcl9-csqsq460OFQ7XyuHb8IU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882989968175-e46a7vptgaaefiqf2l53ojsee0do74mm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
