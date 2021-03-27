@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:budget_control/pages/home_page.dart';
-import 'package:budget_control/pages/manageExpense.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

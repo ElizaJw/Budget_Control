@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:budget_control/pages/home_page.dart';
 
 class Expenses extends StatefulWidget {
   @override
@@ -19,23 +20,51 @@ class PageCreateExpense extends State<Expenses> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(239, 240, 236, 3),
       body: _body(),
-      //bottomNavigationBar: _menu(),
     );
   }
 
   Widget _body() {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[_formExpense(), _btnSave()],
+      //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        _btnReturn(),
+        _formExpense(),
+      ],
     );
+  }
+
+  Widget _btnReturn() {
+    return Container(
+        alignment: Alignment.bottomLeft,
+        child: FloatingActionButton(
+          onPressed: () {
+            //Volver ir a la pantalla especificada
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => HomePage()));
+          },
+          backgroundColor: Colors.blueGrey,
+          child: Icon(Icons.keyboard_backspace),
+        ));
   }
 
   Widget _formExpense() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
-      margin: EdgeInsets.symmetric(vertical: 10),
       child: Column(children: <Widget>[
+        SizedBox(
+          height: 20.0,
+        ),
+        Text(
+          "Nuevo Gasto",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.blue, fontSize: 20.0, fontStyle: FontStyle.normal),
+        ),
+        SizedBox(
+          height: 20.0,
+        ),
         TextFormField(
           decoration: const InputDecoration(
             border: UnderlineInputBorder(),
@@ -51,7 +80,6 @@ class PageCreateExpense extends State<Expenses> {
             border: UnderlineInputBorder(),
             filled: true,
             icon: Icon(Icons.description),
-            hintText: '¿En qué te lo gastaste?',
             labelText: 'Descripción *',
           ),
           keyboardType: TextInputType.text,
@@ -66,6 +94,9 @@ class PageCreateExpense extends State<Expenses> {
           ),
           keyboardType: TextInputType.datetime,
         ),
+        SizedBox(
+          height: 15.0,
+        ),
         DropdownButton<String>(
           icon: Icon(Icons.arrow_downward),
           value: firstValue,
@@ -74,7 +105,7 @@ class PageCreateExpense extends State<Expenses> {
           style: TextStyle(color: Colors.black),
           underline: Container(
             height: 1,
-            color: Colors.black,
+            color: Colors.blue,
           ),
           items: categories.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem(value: value, child: Text(value));
@@ -85,25 +116,17 @@ class PageCreateExpense extends State<Expenses> {
             });
           },
         ),
+        SizedBox(
+          height: 20.0,
+        ),
+        MaterialButton(
+          minWidth: 150.0,
+          height: 40.0,
+          onPressed: () {},
+          color: Colors.lightBlue,
+          child: Text('Registrar', style: TextStyle(color: Colors.black)),
+        ),
       ]),
-    );
-  }
-
-  Widget _btnSave() {
-    return Container(
-      //padding: EdgeInsets.all(20),
-      // margin: EdgeInsets.only(bottom: 20),
-      child: RaisedButton(
-        child: Text(
-          'Guardar',
-          style: TextStyle(fontSize: 17),
-        ),
-        //padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-        color: Color.fromRGBO(86, 226, 151, 1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
     );
   }
 }
