@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:high_chart/high_chart.dart';
+import 'package:budget_control/pages/manageExpense.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,7 +18,11 @@ class _CounterPage extends State<HomePage> {
       body: _body(),
       bottomNavigationBar: _menu(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          //Volver ir a la pantalla especificada
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => Expenses()));
+        },
         backgroundColor: Colors.redAccent,
         child: Icon(Icons.money_off),
       ),
@@ -51,8 +56,8 @@ class _CounterPage extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                  width: 30.0,
-                  height: 30.0,
+                width: 30.0,
+                height: 30.0,
                 child: FaIcon(FontAwesomeIcons.ccVisa),
               ),
               Text('340.000'),
