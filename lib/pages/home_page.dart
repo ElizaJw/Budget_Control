@@ -1,3 +1,4 @@
+//import 'package:budget_control/pages/manageCategories.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:high_chart/high_chart.dart';
