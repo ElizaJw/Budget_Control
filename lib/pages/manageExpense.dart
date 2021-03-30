@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:budget_control/pages/home_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Expenses extends StatefulWidget {
   @override
@@ -7,7 +8,12 @@ class Expenses extends StatefulWidget {
 }
 
 class PageCreateExpense extends State<Expenses> {
-  String firstValue = 'Seleccionar categoría';
+  var _valorGastado = "";
+  var _descripcion = "";
+  var _fecha = "";
+  var _holder = '';
+
+  String _firstValue = 'Seleccionar categoría';
 
   List<String> categories = <String>[
     'Seleccionar categoría',
@@ -66,41 +72,54 @@ class PageCreateExpense extends State<Expenses> {
           height: 20.0,
         ),
         TextFormField(
-          decoration: const InputDecoration(
-            border: UnderlineInputBorder(),
-            filled: true,
-            icon: Icon(Icons.money_outlined),
-            hintText: '¿Cuánto gastaste?',
-            labelText: 'Valor Gastado *',
-          ),
-          keyboardType: TextInputType.number,
-        ),
+            controller: TextEditingController(text: _valorGastado.toString()),
+            decoration: const InputDecoration(
+              border: UnderlineInputBorder(),
+              filled: true,
+              icon: Icon(Icons.money_outlined),
+              hintText: '¿Cuánto gastaste?',
+              labelText: 'Valor Gastado *',
+            ),
+            keyboardType: TextInputType.number,
+            onFieldSubmitted: (String valor) async {
+              _valorGastado = valor;
+              print(
+                  "el valor del campo [Valor Gastado] es: $_valorGastado ...");
+            }),
         TextFormField(
-          decoration: const InputDecoration(
-            border: UnderlineInputBorder(),
-            filled: true,
-            icon: Icon(Icons.description),
-            labelText: 'Descripción *',
-          ),
-          keyboardType: TextInputType.text,
-        ),
+            controller: TextEditingController(text: _descripcion.toString()),
+            decoration: const InputDecoration(
+              border: UnderlineInputBorder(),
+              filled: true,
+              icon: Icon(Icons.description),
+              labelText: 'Descripción *',
+            ),
+            keyboardType: TextInputType.text,
+            onFieldSubmitted: (String valor) async {
+              _descripcion = valor;
+              print("el valor del campo [Descripción] es: $_descripcion ...");
+            }),
         TextFormField(
-          decoration: const InputDecoration(
-            border: UnderlineInputBorder(),
-            filled: true,
-            icon: Icon(Icons.calendar_today),
-            hintText: '¿Cuándo fue eso?',
-            labelText: 'Fecha *',
-          ),
-          keyboardType: TextInputType.datetime,
-        ),
+            controller: TextEditingController(text: _fecha.toString()),
+            decoration: const InputDecoration(
+              border: UnderlineInputBorder(),
+              filled: true,
+              icon: Icon(Icons.calendar_today),
+              hintText: '¿Cuándo fue eso?',
+              labelText: 'Fecha *',
+            ),
+            keyboardType: TextInputType.datetime,
+            onFieldSubmitted: (String valor) async {
+              _fecha = valor;
+              print("el valor del campo [Fecha] es: $_fecha ...");
+            }),
         SizedBox(
           height: 15.0,
         ),
         DropdownButton<String>(
           isExpanded: true,
           icon: Icon(Icons.arrow_downward),
-          value: firstValue,
+          value: _firstValue,
           iconSize: 24,
           elevation: 16,
           style: TextStyle(color: Colors.black),
@@ -113,7 +132,7 @@ class PageCreateExpense extends State<Expenses> {
           }).toList(),
           onChanged: (String value) {
             setState(() {
-              firstValue = value;
+              _firstValue = value;
             });
           },
         ),
@@ -123,11 +142,76 @@ class PageCreateExpense extends State<Expenses> {
         MaterialButton(
           minWidth: 150.0,
           height: 40.0,
-          onPressed: () {},
+          onPressed: () {
+            _addExpense();
+            _verVentanaDialogo(
+              titulo: "Datos Ingresados",
+              mensaje:
+                  "Valor Gastado : $_valorGastado \nDescripción: $_descripcion \nFecha: $_fecha \nCategoría: $_holder",
+              boton: "Ok",
+            );*/
+          },
           color: Colors.lightBlue,
           child: Text('Registrar', style: TextStyle(color: Colors.black)),
         ),
       ]),
     );
+  }
+
+  Future<void> _addExpense() {
+    CollectionReference coleccion =
+        FirebaseFirestore.instance.collection('Expense');
+    return coleccion
+        .add({
+          'valorGastado': this._valorGastado,
+          'descripcion': this._descripcion,
+          'fecha': this._fecha,
+          'categoria': this._holder
+        })
+        .then((value) => _verToast(context,
+            mensaje: 'Datos adicionados con éxito', boton: 'Ok'))
+        .catchError((error) =>
+            _verToast(context, mensaje: 'Error: $error', boton: 'Ok'));
+  }
+
+  void _verToast(BuildContext context,
+      {mensaje = 'Accion Ok', boton = 'Action'}) {
+    final scaffold = Scaffold.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(mensaje),
+        action: SnackBarAction(
+            label: boton, onPressed: scaffold.hideCurrentSnackBar),
+      ),
+    );
+  }
+
+  void getDropDownItem() {
+    setState(() {
+      _holder = _firstValue;
+    });
+  }
+
+  void _verVentanaDialogo({titulo, mensaje, boton}) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (buildcontext) {
+          return AlertDialog(
+            title: Text(titulo),
+            content: Text(mensaje),
+            actions: <Widget>[
+              RaisedButton(
+                child: Text(
+                  boton,
+                  style: TextStyle(color: Colors.blue),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
   }
 }
