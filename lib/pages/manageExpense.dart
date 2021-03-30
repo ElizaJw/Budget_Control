@@ -21,7 +21,7 @@ class PageCreateExpense extends State<Expenses> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(239, 240, 236, 3),
-      body: _body(),
+      body: SingleChildScrollView(child: _body()),
     );
   }
 
@@ -98,6 +98,7 @@ class PageCreateExpense extends State<Expenses> {
           height: 15.0,
         ),
         DropdownButton<String>(
+          isExpanded: true,
           icon: Icon(Icons.arrow_downward),
           value: firstValue,
           iconSize: 24,
