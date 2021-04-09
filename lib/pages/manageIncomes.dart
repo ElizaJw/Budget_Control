@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:budget_control/pages/home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Expenses extends StatefulWidget {
+class Incomes extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => PageCreateExpense();
+  State<StatefulWidget> createState() => PageCreateIncome();
 }
 
-class PageCreateExpense extends State<Expenses> {
-  var _valorGastado = "";
+class PageCreateIncome extends State<Incomes> {
+  var _valorIngresado = "";
   var _descripcion = "";
   var _fecha = "";
   var _holder = '';
 
-  String _firstValue = 'Seleccionar categoría';
+  String _firstValue = 'Seleccionar tipo ingreso';
 
-  List<String> categories = <String>[
-    'Seleccionar categoría',
-    'Ropa',
-    'Estudios',
-    'Entretenimiento',
+  List<String> typeIncomes = <String>[
+    'Seleccionar tipo ingreso',
+    'Trasnferencia',
+    'Efectivo',
+    'Nequi',
     'Facturas'
   ];
 
@@ -36,7 +36,7 @@ class PageCreateExpense extends State<Expenses> {
       //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         _btnReturn(),
-        _formExpense(),
+        _formIncome(),
       ],
     );
   }
@@ -56,7 +56,7 @@ class PageCreateExpense extends State<Expenses> {
         ));
   }
 
-  Widget _formExpense() {
+  Widget _formIncome() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Column(children: <Widget>[
@@ -64,7 +64,7 @@ class PageCreateExpense extends State<Expenses> {
           height: 20.0,
         ),
         Text(
-          "Nuevo Gasto",
+          "Nuevo Ingreso",
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.blue, fontSize: 20.0, fontStyle: FontStyle.normal),
@@ -73,19 +73,19 @@ class PageCreateExpense extends State<Expenses> {
           height: 20.0,
         ),
         TextFormField(
-            controller: TextEditingController(text: _valorGastado.toString()),
+            controller: TextEditingController(text: _valorIngresado.toString()),
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
               filled: true,
               icon: Icon(Icons.money_outlined),
-              hintText: '¿Cuánto gastaste?',
-              labelText: 'Valor Gastado *',
+              hintText: '¿Cuánto ingresaste?',
+              labelText: 'Valor Ingresado *',
             ),
             keyboardType: TextInputType.number,
             onFieldSubmitted: (String valor) async {
-              _valorGastado = valor;
+              _valorIngresado = valor;
               print(
-                  "el valor del campo [Valor Gastado] es: $_valorGastado ...");
+                  "el valor del campo [Valor Gastado] es: $_valorIngresado ...");
             }),
         TextFormField(
             controller: TextEditingController(text: _descripcion.toString()),
@@ -118,25 +118,24 @@ class PageCreateExpense extends State<Expenses> {
           height: 15.0,
         ),
         DropdownButton<String>(
-          isExpanded: true,
-          icon: Icon(Icons.arrow_downward),
-          value: _firstValue,
-          iconSize: 24,
-          elevation: 16,
-          style: TextStyle(color: Colors.black),
-          underline: Container(
-            height: 1,
-            color: Colors.blue,
-          ),
-          items: categories.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem(value: value, child: Text(value));
-          }).toList(),
-          onChanged: (String value) {
-            setState(() {
-              _firstValue = value;
-            });
-          },
-        ),
+            isExpanded: true,
+            icon: Icon(Icons.arrow_downward),
+            value: _firstValue,
+            iconSize: 24,
+            elevation: 16,
+            style: TextStyle(color: Colors.black),
+            underline: Container(
+              height: 1,
+              color: Colors.blue,
+            ),
+            items: typeIncomes.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem(value: value, child: Text(value));
+            }).toList(),
+            onChanged: (String value) {
+              setState(() {
+                _firstValue = value;
+              });
+            }),
         SizedBox(
           height: 30.0,
         ),
@@ -145,12 +144,12 @@ class PageCreateExpense extends State<Expenses> {
           height: 40.0,
           onPressed: () {
             _addExpense();
-            _verVentanaDialogo(
+            /*  _verVentanaDialogo(
               titulo: "Datos Ingresados",
               mensaje:
-                  "Valor Gastado : $_valorGastado \nDescripción: $_descripcion \nFecha: $_fecha \nCategoría: $_holder",
+                  "Valor Gastado : $_valorIngresado \nDescripción: $_descripcion \nFecha: $_fecha \nCategoría: $_holder",
               boton: "Ok",
-            );
+            );*/
           },
           color: Colors.lightBlue,
           child: Text('Registrar', style: TextStyle(color: Colors.black)),
@@ -164,7 +163,7 @@ class PageCreateExpense extends State<Expenses> {
         FirebaseFirestore.instance.collection('Expense');
     return coleccion
         .add({
-          'valorGastado': this._valorGastado,
+          'valorGastado': this._valorIngresado,
           'descripcion': this._descripcion,
           'fecha': this._fecha,
           'categoria': this._holder

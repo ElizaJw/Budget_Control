@@ -12,7 +12,7 @@ class ManageCategories extends State<Catergories> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(239, 240, 236, 3),
-      body: _body(),
+      body: SingleChildScrollView(child: _body()),
     );
   }
 
@@ -29,6 +29,7 @@ class ManageCategories extends State<Catergories> {
 
   Widget _btnReturn() {
     return Container(
+        padding: EdgeInsets.all(15),
         alignment: Alignment.bottomLeft,
         child: FloatingActionButton(
           onPressed: () {
@@ -49,7 +50,7 @@ class ManageCategories extends State<Catergories> {
           height: 20.0,
         ),
         Text(
-          "Administrar Categorias",
+          "Administrar Categorías",
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.blue, fontSize: 20.0, fontStyle: FontStyle.normal),
@@ -76,7 +77,7 @@ class ManageCategories extends State<Catergories> {
           keyboardType: TextInputType.number,
         ),
         SizedBox(
-          height: 15.0,
+          height: 25.0,
         ),
         MaterialButton(
           minWidth: 150.0,

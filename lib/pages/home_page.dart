@@ -1,8 +1,10 @@
 //import 'package:budget_control/pages/manageCategories.dart';
+import 'package:budget_control/pages/manageIncomes.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:high_chart/high_chart.dart';
 import 'package:budget_control/pages/manageExpense.dart';
+import 'package:budget_control/pages/manageCategories.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,7 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _CounterPage extends State<HomePage> {
   String name = 'Elizabeth Gonzalez';
-  String balance = '34000';
+  String balance = '100.000';
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +45,17 @@ class _CounterPage extends State<HomePage> {
 
   Widget _balance() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
+        Padding(padding: EdgeInsets.all(3)),
         Container(
-          padding: EdgeInsets.only(left: 30.0),
+          padding: EdgeInsets.only(left: 40.0),
           width: 300,
           height: 150,
           decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/background.jpg'),
+            ),
             color: Colors.grey,
             borderRadius: BorderRadius.circular(20.0),
           ),
@@ -61,16 +68,32 @@ class _CounterPage extends State<HomePage> {
                 height: 30.0,
                 child: FaIcon(FontAwesomeIcons.ccVisa),
               ),
-              Text('340.000'),
-              Text('Eliza Pinguina')
+              Text(
+                balance,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17.0,
+                    fontStyle: FontStyle.normal),
+              ),
+              Text(
+                name,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17.0,
+                    fontStyle: FontStyle.normal),
+              )
             ],
           ),
         ),
         FloatingActionButton(
-          onPressed: () {},
           backgroundColor: Colors.green,
           child: Icon(Icons.account_balance_wallet),
-        )
+          onPressed: () {
+            //Volver ir a la pantalla especificada
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => Incomes()));
+          },
+        ),
       ],
     );
   }
@@ -123,7 +146,7 @@ class _CounterPage extends State<HomePage> {
         margin: EdgeInsets.only(left: 12.0, right: 12.0),
         child: Row(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             IconButton(
               //update the bottom app bar view each time an item is clicked
@@ -135,29 +158,15 @@ class _CounterPage extends State<HomePage> {
               ),
             ),
             IconButton(
-              onPressed: () {},
-              iconSize: 27.0,
-              icon: Icon(
-                Icons.call_made,
-              ),
-            ),
-            //to leave space in between the bottom app bar items and below the FAB
-            SizedBox(
-              width: 50.0,
-            ),
-            IconButton(
-              onPressed: () {},
-              iconSize: 27.0,
-              icon: Icon(
-                Icons.call_received,
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
               iconSize: 27.0,
               icon: Icon(
                 Icons.settings,
               ),
+              onPressed: () {
+                //Volver ir a la pantalla especificada
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => Catergories()));
+              },
             ),
           ],
         ),
