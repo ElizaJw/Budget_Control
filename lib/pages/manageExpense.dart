@@ -11,7 +11,6 @@ class PageCreateExpense extends State<Expenses> {
   var _valorGastado = "";
   var _descripcion = "";
   var _fecha = "";
-  var _holder = '';
 
   String _firstValue = 'Seleccionar categoría';
 
@@ -82,7 +81,7 @@ class PageCreateExpense extends State<Expenses> {
               labelText: 'Valor Gastado *',
             ),
             keyboardType: TextInputType.number,
-            onFieldSubmitted: (String valor) async {
+            onChanged: (String valor) async {
               _valorGastado = valor;
               print(
                   "el valor del campo [Valor Gastado] es: $_valorGastado ...");
@@ -96,7 +95,7 @@ class PageCreateExpense extends State<Expenses> {
               labelText: 'Descripción *',
             ),
             keyboardType: TextInputType.text,
-            onFieldSubmitted: (String valor) async {
+            onChanged: (String valor) async {
               _descripcion = valor;
               print("el valor del campo [Descripción] es: $_descripcion ...");
             }),
@@ -110,7 +109,7 @@ class PageCreateExpense extends State<Expenses> {
               labelText: 'Fecha *',
             ),
             keyboardType: TextInputType.datetime,
-            onFieldSubmitted: (String valor) async {
+            onChanged: (String valor) async {
               _fecha = valor;
               print("el valor del campo [Fecha] es: $_fecha ...");
             }),
@@ -148,7 +147,7 @@ class PageCreateExpense extends State<Expenses> {
             _verVentanaDialogo(
               titulo: "Datos Ingresados",
               mensaje:
-                  "Valor Gastado : $_valorGastado \nDescripción: $_descripcion \nFecha: $_fecha \nCategoría: $_holder",
+                  "Valor Gastado : $_valorGastado \nDescripción: $_descripcion \nFecha: $_fecha \nCategoría: $_firstValue",
               boton: "Ok",
             );
           },
@@ -167,7 +166,7 @@ class PageCreateExpense extends State<Expenses> {
           'valorGastado': this._valorGastado,
           'descripcion': this._descripcion,
           'fecha': this._fecha,
-          'categoria': this._holder
+          'categoria': this._firstValue
         })
         .then((value) => _verToast(context,
             mensaje: 'Datos adicionados con éxito', boton: 'Ok'))
