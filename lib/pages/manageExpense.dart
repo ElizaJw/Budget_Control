@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:budget_control/pages/home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:budget_control/Util/Utilities.dart';
 
 class Expenses extends StatefulWidget {
   @override
@@ -12,6 +13,7 @@ class PageCreateExpense extends State<Expenses> {
   var _descripcion = "";
   var _fecha = "";
   var _firstValue = 'Seleccionar categoría';
+  Utilities util = new Utilities();
 
   List<String> categories = <String>[
     'Seleccionar categoría',
@@ -141,7 +143,8 @@ class PageCreateExpense extends State<Expenses> {
           minWidth: 150.0,
           height: 40.0,
           onPressed: () {
-            _verVentanaDialogo(
+            util.verVentanaDialogo(
+              context,
               titulo: "Datos Ingresados",
               mensaje:
                   "Valor Gastado : $_valorGastado \nDescripción: $_descripcion \nFecha: $_fecha \nCategoría: $_firstValue",
@@ -166,44 +169,9 @@ class PageCreateExpense extends State<Expenses> {
           'fecha': this._fecha,
           'categoria': this._firstValue
         })
-        .then((value) => _verToast(context,
+        .then((value) => util.verToast(context,
             mensaje: 'Datos adicionados con éxito', boton: 'Ok'))
         .catchError((error) =>
-            _verToast(context, mensaje: 'Error: $error', boton: 'Ok'));
-  }
-
-  void _verToast(BuildContext context,
-      {mensaje = 'Accion Ok', boton = 'Action'}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(mensaje),
-        action: SnackBarAction(
-            label: boton,
-            onPressed: ScaffoldMessenger.of(context).hideCurrentSnackBar),
-      ),
-    );
-  }
-
-  void _verVentanaDialogo({titulo, mensaje, boton}) {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (buildcontext) {
-          return AlertDialog(
-            title: Text(titulo),
-            content: Text(mensaje),
-            actions: <Widget>[
-              ElevatedButton(
-                child: Text(
-                  boton,
-                  style: TextStyle(color: Colors.blue),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        });
+            util.verToast(context, mensaje: 'Error: $error', boton: 'Ok'));
   }
 }
