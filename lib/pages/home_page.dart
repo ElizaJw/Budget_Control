@@ -1,4 +1,3 @@
-//import 'package:budget_control/pages/manageCategories.dart';
 import 'package:budget_control/pages/manageIncomes.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -160,7 +159,7 @@ class _CounterPage extends State<HomePage> {
             IconButton(
               iconSize: 27.0,
               icon: Icon(
-                Icons.settings,
+                Icons.category_sharp,
               ),
               onPressed: () {
                 //Volver ir a la pantalla especificada

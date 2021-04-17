@@ -8,6 +8,9 @@ class Catergories extends StatefulWidget {
 }
 
 class ManageCategories extends State<Catergories> {
+  var _descripcionCategoria = "";
+  var _topeCategoria = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,10 +21,9 @@ class ManageCategories extends State<Catergories> {
 
   Widget _body() {
     return Column(
-      //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         _btnReturn(),
-        _formExpense(),
+        _formCategories(),
         _dataTableCategories(),
       ],
     );
@@ -33,7 +35,7 @@ class ManageCategories extends State<Catergories> {
         alignment: Alignment.bottomLeft,
         child: FloatingActionButton(
           onPressed: () {
-            //Volver ir a la pantalla especificada
+            //Go back to the specified screen
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => HomePage()));
           },
@@ -42,7 +44,7 @@ class ManageCategories extends State<Catergories> {
         ));
   }
 
-  Widget _formExpense() {
+  Widget _formCategories() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Column(children: <Widget>[
@@ -59,14 +61,20 @@ class ManageCategories extends State<Catergories> {
           height: 20.0,
         ),
         TextFormField(
-          decoration: const InputDecoration(
-            border: UnderlineInputBorder(),
-            filled: true,
-            icon: Icon(Icons.money_outlined),
-            labelText: 'Descripción Categoria *',
-          ),
-          keyboardType: TextInputType.text,
-        ),
+            controller:
+                TextEditingController(text: _descripcionCategoria.toString()),
+            decoration: const InputDecoration(
+              border: UnderlineInputBorder(),
+              filled: true,
+              icon: Icon(Icons.money_outlined),
+              labelText: 'Descripción Categoria *',
+            ),
+            keyboardType: TextInputType.text,
+            onChanged: (String valor) async {
+              _descripcionCategoria = valor;
+              print(
+                  "El valor del campo [Valor Gastado] es: $_descripcionCategoria ...");
+            }),
         TextFormField(
           decoration: const InputDecoration(
             border: UnderlineInputBorder(),
