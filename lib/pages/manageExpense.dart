@@ -11,8 +11,7 @@ class PageCreateExpense extends State<Expenses> {
   var _valorGastado = "";
   var _descripcion = "";
   var _fecha = "";
-
-  String _firstValue = 'Seleccionar categoría';
+  var _firstValue = 'Seleccionar categoría';
 
   List<String> categories = <String>[
     'Seleccionar categoría',
@@ -32,7 +31,6 @@ class PageCreateExpense extends State<Expenses> {
 
   Widget _body() {
     return Column(
-      //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         _btnReturn(),
         _formExpense(),
@@ -46,7 +44,7 @@ class PageCreateExpense extends State<Expenses> {
         padding: EdgeInsets.all(15),
         child: FloatingActionButton(
           onPressed: () {
-            //Volver ir a la pantalla especificada
+            //Go back to the specified screen
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => HomePage()));
           },
@@ -84,7 +82,7 @@ class PageCreateExpense extends State<Expenses> {
             onChanged: (String valor) async {
               _valorGastado = valor;
               print(
-                  "el valor del campo [Valor Gastado] es: $_valorGastado ...");
+                  "El valor del campo [Valor Gastado] es: $_valorGastado ...");
             }),
         TextFormField(
             controller: TextEditingController(text: _descripcion.toString()),
@@ -97,7 +95,7 @@ class PageCreateExpense extends State<Expenses> {
             keyboardType: TextInputType.text,
             onChanged: (String valor) async {
               _descripcion = valor;
-              print("el valor del campo [Descripción] es: $_descripcion ...");
+              print("El valor del campo [Descripción] es: $_descripcion ...");
             }),
         TextFormField(
             controller: TextEditingController(text: _fecha.toString()),
@@ -111,7 +109,7 @@ class PageCreateExpense extends State<Expenses> {
             keyboardType: TextInputType.datetime,
             onChanged: (String valor) async {
               _fecha = valor;
-              print("el valor del campo [Fecha] es: $_fecha ...");
+              print("El valor del campo [Fecha] es: $_fecha ...");
             }),
         SizedBox(
           height: 15.0,
@@ -143,13 +141,13 @@ class PageCreateExpense extends State<Expenses> {
           minWidth: 150.0,
           height: 40.0,
           onPressed: () {
-            _addExpense();
             _verVentanaDialogo(
               titulo: "Datos Ingresados",
               mensaje:
                   "Valor Gastado : $_valorGastado \nDescripción: $_descripcion \nFecha: $_fecha \nCategoría: $_firstValue",
               boton: "Ok",
             );
+            _addExpense();
           },
           color: Colors.lightBlue,
           child: Text('Registrar', style: TextStyle(color: Colors.black)),
@@ -176,20 +174,14 @@ class PageCreateExpense extends State<Expenses> {
 
   void _verToast(BuildContext context,
       {mensaje = 'Accion Ok', boton = 'Action'}) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(mensaje),
         action: SnackBarAction(
-            label: boton, onPressed: scaffold.hideCurrentSnackBar),
+            label: boton,
+            onPressed: ScaffoldMessenger.of(context).hideCurrentSnackBar),
       ),
     );
-  }
-
-  void getDropDownItem() {
-    setState(() {
-      _holder = _firstValue;
-    });
   }
 
   void _verVentanaDialogo({titulo, mensaje, boton}) {
@@ -201,7 +193,7 @@ class PageCreateExpense extends State<Expenses> {
             title: Text(titulo),
             content: Text(mensaje),
             actions: <Widget>[
-              RaisedButton(
+              ElevatedButton(
                 child: Text(
                   boton,
                   style: TextStyle(color: Colors.blue),
