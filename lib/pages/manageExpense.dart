@@ -13,6 +13,8 @@ class PageCreateExpense extends State<Expenses> {
   var _descripcion = "";
   var _fecha = "";
   var _firstValue = 'Seleccionar categoría';
+  final _keyForm = GlobalKey<FormState>();
+
   Utilities util = new Utilities();
 
   List<String> categories = <String>[
@@ -58,104 +60,126 @@ class PageCreateExpense extends State<Expenses> {
   Widget _formExpense() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Column(children: <Widget>[
-        SizedBox(
-          height: 20.0,
-        ),
-        Text(
-          "Nuevo Gasto",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.blue, fontSize: 20.0, fontStyle: FontStyle.normal),
-        ),
-        SizedBox(
-          height: 20.0,
-        ),
-        TextFormField(
-            controller: TextEditingController(text: _valorGastado.toString()),
-            decoration: const InputDecoration(
-              border: UnderlineInputBorder(),
-              filled: true,
-              icon: Icon(Icons.money_outlined),
-              hintText: '¿Cuánto gastaste?',
-              labelText: 'Valor Gastado *',
-            ),
-            keyboardType: TextInputType.number,
-            onChanged: (String valor) async {
-              _valorGastado = valor;
-              print(
-                  "El valor del campo [Valor Gastado] es: $_valorGastado ...");
-            }),
-        TextFormField(
-            controller: TextEditingController(text: _descripcion.toString()),
-            decoration: const InputDecoration(
-              border: UnderlineInputBorder(),
-              filled: true,
-              icon: Icon(Icons.description),
-              labelText: 'Descripción *',
-            ),
-            keyboardType: TextInputType.text,
-            onChanged: (String valor) async {
-              _descripcion = valor;
-              print("El valor del campo [Descripción] es: $_descripcion ...");
-            }),
-        TextFormField(
-            controller: TextEditingController(text: _fecha.toString()),
-            decoration: const InputDecoration(
-              border: UnderlineInputBorder(),
-              filled: true,
-              icon: Icon(Icons.calendar_today),
-              hintText: '¿Cuándo fue eso?',
-              labelText: 'Fecha *',
-            ),
-            keyboardType: TextInputType.datetime,
-            onChanged: (String valor) async {
-              _fecha = valor;
-              print("El valor del campo [Fecha] es: $_fecha ...");
-            }),
-        SizedBox(
-          height: 15.0,
-        ),
-        DropdownButton<String>(
-          isExpanded: true,
-          icon: Icon(Icons.arrow_downward),
-          value: _firstValue,
-          iconSize: 24,
-          elevation: 16,
-          style: TextStyle(color: Colors.black),
-          underline: Container(
-            height: 1,
-            color: Colors.blue,
+      child: Form(
+        key: _keyForm,
+        child: Column(children: <Widget>[
+          SizedBox(
+            height: 20.0,
           ),
-          items: categories.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem(value: value, child: Text(value));
-          }).toList(),
-          onChanged: (String value) {
-            setState(() {
-              _firstValue = value;
-            });
-          },
-        ),
-        SizedBox(
-          height: 30.0,
-        ),
-        MaterialButton(
-          minWidth: 150.0,
-          height: 40.0,
-          onPressed: () {
-            util.verVentanaDialogo(
-              context,
-              titulo: "Datos Ingresados",
-              mensaje:
-                  "Valor Gastado : $_valorGastado \nDescripción: $_descripcion \nFecha: $_fecha \nCategoría: $_firstValue",
-              boton: "Ok",
-            );
-            _addExpense();
-          },
-          color: Colors.lightBlue,
-          child: Text('Registrar', style: TextStyle(color: Colors.black)),
-        ),
-      ]),
+          Text(
+            "Nuevo Gasto",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.blue,
+                fontSize: 20.0,
+                fontStyle: FontStyle.normal),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          TextFormField(
+              controller: TextEditingController(text: _valorGastado.toString()),
+              validator: (value) {
+                if (value.isEmpty || null == value) {
+                  return 'La valor no puede estar vacio.';
+                }
+              },
+              decoration: const InputDecoration(
+                border: UnderlineInputBorder(),
+                filled: true,
+                icon: Icon(Icons.money_outlined),
+                hintText: '¿Cuánto gastaste?',
+                labelText: 'Valor Gastado *',
+              ),
+              keyboardType: TextInputType.number,
+              onChanged: (String valor) async {
+                _valorGastado = valor;
+                print(
+                    "El valor del campo [Valor Gastado] es: $_valorGastado ...");
+              }),
+          TextFormField(
+              controller: TextEditingController(text: _descripcion.toString()),
+              validator: (value) {
+                if (value.isEmpty || null == value) {
+                  return 'La descripción no puede estar vacia.';
+                }
+              },
+              decoration: const InputDecoration(
+                border: UnderlineInputBorder(),
+                filled: true,
+                icon: Icon(Icons.description),
+                labelText: 'Descripción *',
+              ),
+              keyboardType: TextInputType.text,
+              onChanged: (String valor) async {
+                _descripcion = valor;
+                print("El valor del campo [Descripción] es: $_descripcion ...");
+              }),
+          TextFormField(
+              controller: TextEditingController(text: _fecha.toString()),
+              validator: (value) {
+                if (value.isEmpty || null == value) {
+                  return 'La fecha no puede estar vacia.';
+                }
+              },
+              decoration: const InputDecoration(
+                border: UnderlineInputBorder(),
+                filled: true,
+                icon: Icon(Icons.calendar_today),
+                hintText: '¿Cuándo fue eso?',
+                labelText: 'Fecha *',
+              ),
+              keyboardType: TextInputType.datetime,
+              onChanged: (String valor) async {
+                _fecha = valor;
+                print("El valor del campo [Fecha] es: $_fecha ...");
+              }),
+          SizedBox(
+            height: 15.0,
+          ),
+          //Falta realizar el ComboBox Dinamico.
+          DropdownButtonFormField<String>(
+            isExpanded: true,
+            icon: Icon(Icons.arrow_downward),
+            value: _firstValue,
+            iconSize: 24,
+            elevation: 16,
+            style: TextStyle(color: Colors.black),
+            items: categories.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem(value: value, child: Text(value));
+            }).toList(),
+            onChanged: (String value) {
+              setState(() {
+                _firstValue = value;
+              });
+            },
+            validator: (value) {
+              if (value.isEmpty || value == "Seleccionar categoría") {
+                return 'Debe seleccionar una categoría.';
+              }
+            },
+          ),
+          SizedBox(
+            height: 30.0,
+          ),
+          MaterialButton(
+            minWidth: 150.0,
+            height: 40.0,
+            onPressed: () {
+              if (_keyForm.currentState.validate()) {
+                util.showWindowDialog(context,
+                    titulo: "Datos Ingresados",
+                    mensaje:
+                        "Valor Gastado : $_valorGastado \nDescripción: $_descripcion \nFecha: $_fecha \nCategoría: $_firstValue",
+                    boton: "Ok");
+                _addExpense();
+              }
+            },
+            color: Colors.lightBlue,
+            child: Text('Registrar', style: TextStyle(color: Colors.black)),
+          ),
+        ]),
+      ),
     );
   }
 
@@ -169,9 +193,9 @@ class PageCreateExpense extends State<Expenses> {
           'fecha': this._fecha,
           'categoria': this._firstValue
         })
-        .then((value) => util.verToast(context,
+        .then((value) => util.showToast(context,
             mensaje: 'Datos adicionados con éxito', boton: 'Ok'))
         .catchError((error) =>
-            util.verToast(context, mensaje: 'Error: $error', boton: 'Ok'));
+            util.showToast(context, mensaje: 'Error: $error', boton: 'Ok'));
   }
 }

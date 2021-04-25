@@ -1,40 +1,16 @@
-class modelCategories {
-  int _tope;
-  String _descripcion;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  modelCategories(this._tope, this._descripcion);
+class ModelCategories {
+  final String tope;
+  final String descripcion;
+  final DocumentReference reference;
 
-  set descripcion(String descripcion) {
-    if (_validarDatoNullVacioStr(descripcion)) {
-      _descripcion = descripcion;
-    }
-  }
+  ModelCategories.fromMap(Map<String, dynamic> map, {this.reference})
+      : assert(map['tope'] != null),
+        assert(map['descripcion'] != null),
+        tope = map['tope'],
+        descripcion = map['descripcion'];
 
-  String get descripcion {
-    return _descripcion;
-  }
-
-  set tope(int tope) {
-    if (_validarDatoNullVacioInt(tope)) {
-      _tope = tope;
-    }
-  }
-
-  int get tope {
-    return _tope;
-  }
-
-  bool _validarDatoNullVacioStr(String dato) {
-    if (null == dato || dato.isEmpty) {
-      throw ('La descripcion no debe estar vacia.');
-    }
-    return true;
-  }
-
-  bool _validarDatoNullVacioInt(int dato) {
-    if (dato <= 0) {
-      throw ('El tope debe ser mayor a 0.');
-    }
-    return true;
-  }
+  ModelCategories.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data(), reference: snapshot.reference);
 }

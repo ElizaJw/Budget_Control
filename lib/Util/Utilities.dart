@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Utilities {
   Utilities();
-  void verVentanaDialogo(BuildContext context, {titulo, mensaje, boton}) {
+  void showWindowDialog(BuildContext context, {titulo, mensaje, boton}) {
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -25,7 +25,7 @@ class Utilities {
         });
   }
 
-  void verToast(BuildContext context,
+  void showToast(BuildContext context,
       {mensaje = 'Accion Ok', boton = 'Action'}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
