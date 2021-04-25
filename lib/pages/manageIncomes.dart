@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:budget_control/pages/home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_field/date_field.dart';
+import 'package:budget_control/Util/Utilities.dart';
 
 class Incomes extends StatefulWidget {
   @override
@@ -8,19 +10,20 @@ class Incomes extends StatefulWidget {
 }
 
 class PageCreateIncome extends State<Incomes> {
+  Utilities util = new Utilities();
   var _valorIngresado = "";
   var _descripcion = "";
-  var _fecha = "";
-  var _holder = '';
+  //var _fecha = "";
+  var _firstValue = 'Seleccionar tipo ingreso';
+  DateTime _fecha;
 
-  String _firstValue = 'Seleccionar tipo ingreso';
+  //String _firstValue = 'Seleccionar tipo ingreso';
 
   List<String> typeIncomes = <String>[
     'Seleccionar tipo ingreso',
     'Trasnferencia',
     'Efectivo',
-    'Nequi',
-    'Facturas'
+    'Nequi'
   ];
 
   @override
@@ -82,10 +85,10 @@ class PageCreateIncome extends State<Incomes> {
               labelText: 'Valor Ingresado *',
             ),
             keyboardType: TextInputType.number,
-            onFieldSubmitted: (String valor) async {
+            onChanged: (String valor) async {
               _valorIngresado = valor;
               print(
-                  "el valor del campo [Valor Gastado] es: $_valorIngresado ...");
+                  "el valor del campo [Valor Ingresado] es: $_valorIngresado ...");
             }),
         TextFormField(
             controller: TextEditingController(text: _descripcion.toString()),
@@ -96,12 +99,11 @@ class PageCreateIncome extends State<Incomes> {
               labelText: 'Descripción *',
             ),
             keyboardType: TextInputType.text,
-            onFieldSubmitted: (String valor) async {
+            onChanged: (String valor) async {
               _descripcion = valor;
               print("el valor del campo [Descripción] es: $_descripcion ...");
             }),
-        TextFormField(
-            controller: TextEditingController(text: _fecha.toString()),
+        DateTimeField(
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
               filled: true,
@@ -109,10 +111,11 @@ class PageCreateIncome extends State<Incomes> {
               hintText: '¿Cuándo fue eso?',
               labelText: 'Fecha *',
             ),
-            keyboardType: TextInputType.datetime,
-            onFieldSubmitted: (String valor) async {
-              _fecha = valor;
-              print("el valor del campo [Fecha] es: $_fecha ...");
+            selectedDate: _fecha,
+            onDateSelected: (DateTime value) {
+              setState(() {
+                _fecha = value;
+              });
             }),
         SizedBox(
           height: 15.0,
@@ -143,13 +146,14 @@ class PageCreateIncome extends State<Incomes> {
           minWidth: 150.0,
           height: 40.0,
           onPressed: () {
-            _addExpense();
-            /*  _verVentanaDialogo(
+            util.verVentanaDialogo(
+              context,
               titulo: "Datos Ingresados",
               mensaje:
-                  "Valor Gastado : $_valorIngresado \nDescripción: $_descripcion \nFecha: $_fecha \nCategoría: $_holder",
+                  "Valor Gastado : $_valorIngresado \nDescripción: $_descripcion \nFecha: $_fecha \nCategoría: $_firstValue",
               boton: "Ok",
-            );*/
+            );
+            _addIncome();
           },
           color: Colors.lightBlue,
           child: Text('Registrar', style: TextStyle(color: Colors.black)),
@@ -158,60 +162,19 @@ class PageCreateIncome extends State<Incomes> {
     );
   }
 
-  Future<void> _addExpense() {
+  Future<void> _addIncome() {
     CollectionReference coleccion =
-        FirebaseFirestore.instance.collection('Expense');
+        FirebaseFirestore.instance.collection('Income');
     return coleccion
         .add({
-          'valorGastado': this._valorIngresado,
+          'valorIngresado': this._valorIngresado,
           'descripcion': this._descripcion,
           'fecha': this._fecha,
-          'categoria': this._holder
+          'tipoIngreso': this._firstValue
         })
-        .then((value) => _verToast(context,
-            mensaje: 'Datos adicionados con éxito', boton: 'Ok'))
+        .then((value) => util.verToast(context,
+            mensaje: 'Datos registrados con éxito', boton: 'Ok'))
         .catchError((error) =>
-            _verToast(context, mensaje: 'Error: $error', boton: 'Ok'));
-  }
-
-  void _verToast(BuildContext context,
-      {mensaje = 'Accion Ok', boton = 'Action'}) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: Text(mensaje),
-        action: SnackBarAction(
-            label: boton, onPressed: scaffold.hideCurrentSnackBar),
-      ),
-    );
-  }
-
-  void getDropDownItem() {
-    setState(() {
-      _holder = _firstValue;
-    });
-  }
-
-  void _verVentanaDialogo({titulo, mensaje, boton}) {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (buildcontext) {
-          return AlertDialog(
-            title: Text(titulo),
-            content: Text(mensaje),
-            actions: <Widget>[
-              RaisedButton(
-                child: Text(
-                  boton,
-                  style: TextStyle(color: Colors.blue),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        });
+            util.verToast(context, mensaje: 'Error: $error', boton: 'Ok'));
   }
 }
