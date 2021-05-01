@@ -3,6 +3,7 @@ import 'package:budget_control/model/ModelCategories.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_control/pages/home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:budget_control/styles/styleForm.dart';
 
 class Catergories extends StatefulWidget {
   @override
@@ -10,6 +11,7 @@ class Catergories extends StatefulWidget {
 }
 
 class ManageCategories extends State<Catergories> {
+  StyleForm style = new StyleForm();
   var _descripcion = "";
   var _tope = "";
   Utilities util = new Utilities();
@@ -26,14 +28,14 @@ class ManageCategories extends State<Catergories> {
   Widget _body() {
     return Column(
       children: <Widget>[
-        _btnReturn(),
+        btnReturn(),
         _formCategories(),
         _dataTableCategories(),
       ],
     );
   }
 
-  Widget _btnReturn() {
+  Widget btnReturn() {
     return Container(
         padding: EdgeInsets.all(15),
         alignment: Alignment.bottomLeft,
@@ -54,20 +56,9 @@ class ManageCategories extends State<Catergories> {
       child: Form(
         key: _keyForm,
         child: Column(children: <Widget>[
-          SizedBox(
-            height: 20.0,
-          ),
-          Text(
-            "Administrar Categorías",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.blue,
-                fontSize: 20.0,
-                fontStyle: FontStyle.normal),
-          ),
-          SizedBox(
-            height: 20.0,
-          ),
+          style.SizeSpace(20.0),
+          style.StyleTitle('Administrar Categorías'),
+          style.SizeSpace(20.0),
           TextFormField(
               controller: TextEditingController(text: _descripcion.toString()),
               validator: (value) {
@@ -75,12 +66,8 @@ class ManageCategories extends State<Catergories> {
                   return 'La descripción no puede estar vacia.';
                 }
               },
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                filled: true,
-                icon: Icon(Icons.money_outlined),
-                labelText: 'Descripción Categoria *',
-              ),
+              decoration: style.StyleInput('Descripción Categoría *',
+                  'Ingresa la descripción', Icon(Icons.description)),
               keyboardType: TextInputType.text,
               onChanged: (String valor) async {
                 _descripcion = valor;
@@ -94,20 +81,14 @@ class ManageCategories extends State<Catergories> {
                   return 'El Tope no puede estar vacio.';
                 }
               },
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                filled: true,
-                icon: Icon(Icons.description),
-                labelText: 'Tope Categoria *',
-              ),
+              decoration: style.StyleInput('Tope Categoría *',
+                  'I¿Cuánto será el tope?', Icon(Icons.confirmation_number)),
               keyboardType: TextInputType.number,
               onChanged: (String valor) async {
                 _tope = valor;
                 print("El valor del campo [Tope Categoria] es: $_tope ...");
               }),
-          SizedBox(
-            height: 25.0,
-          ),
+          style.SizeSpace(25.0),
           MaterialButton(
             minWidth: 150.0,
             height: 40.0,

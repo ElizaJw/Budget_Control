@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:budget_control/pages/home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:budget_control/Util/Utilities.dart';
+import 'package:date_field/date_field.dart';
+import 'package:budget_control/styles/styleForm.dart';
 
 class Expenses extends StatefulWidget {
   @override
@@ -9,9 +11,10 @@ class Expenses extends StatefulWidget {
 }
 
 class PageCreateExpense extends State<Expenses> {
+  StyleForm style = new StyleForm();
   var _valorGastado = "";
   var _descripcion = "";
-  var _fecha = "";
+  DateTime _fecha;
   var _firstValue = 'Seleccionar categoría';
   final _keyForm = GlobalKey<FormState>();
 
@@ -63,34 +66,18 @@ class PageCreateExpense extends State<Expenses> {
       child: Form(
         key: _keyForm,
         child: Column(children: <Widget>[
-          SizedBox(
-            height: 20.0,
-          ),
-          Text(
-            "Nuevo Gasto",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.blue,
-                fontSize: 20.0,
-                fontStyle: FontStyle.normal),
-          ),
-          SizedBox(
-            height: 20.0,
-          ),
+          style.SizeSpace(20.0),
+          style.StyleTitle('Nuevo Gasto'),
+          style.SizeSpace(20.0),
           TextFormField(
               controller: TextEditingController(text: _valorGastado.toString()),
               validator: (value) {
                 if (value.isEmpty || null == value) {
-                  return 'La valor no puede estar vacio.';
+                  return 'El valor no puede estar vacío.';
                 }
               },
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                filled: true,
-                icon: Icon(Icons.money_outlined),
-                hintText: '¿Cuánto gastaste?',
-                labelText: 'Valor Gastado *',
-              ),
+              decoration: style.StyleInput('Valor Gastado *',
+                  'Ingresa cuánto gastaste', Icon(Icons.money_outlined)),
               keyboardType: TextInputType.number,
               onChanged: (String valor) async {
                 _valorGastado = valor;
@@ -101,42 +88,31 @@ class PageCreateExpense extends State<Expenses> {
               controller: TextEditingController(text: _descripcion.toString()),
               validator: (value) {
                 if (value.isEmpty || null == value) {
-                  return 'La descripción no puede estar vacia.';
+                  return 'La descripción no puede estar vacía.';
                 }
               },
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                filled: true,
-                icon: Icon(Icons.description),
-                labelText: 'Descripción *',
-              ),
+              decoration: style.StyleInput('Descripción *',
+                  '¿En qué consistió el gasto?', Icon(Icons.description)),
               keyboardType: TextInputType.text,
               onChanged: (String valor) async {
                 _descripcion = valor;
                 print("El valor del campo [Descripción] es: $_descripcion ...");
               }),
-          TextFormField(
-              controller: TextEditingController(text: _fecha.toString()),
+          DateTimeFormField(
               validator: (value) {
-                if (value.isEmpty || null == value) {
-                  return 'La fecha no puede estar vacia.';
+                if (value == null) {
+                  return 'La fecha no puede estar vacía';
                 }
               },
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                filled: true,
-                icon: Icon(Icons.calendar_today),
-                hintText: '¿Cuándo fue eso?',
-                labelText: 'Fecha *',
-              ),
-              keyboardType: TextInputType.datetime,
-              onChanged: (String valor) async {
-                _fecha = valor;
-                print("El valor del campo [Fecha] es: $_fecha ...");
+              decoration: style.StyleInput('Fecha *',
+                  '¿Cuándo se hizo el gasto?', Icon(Icons.calendar_today)),
+              initialValue: _fecha,
+              onDateSelected: (DateTime value) {
+                setState(() {
+                  _fecha = value;
+                });
               }),
-          SizedBox(
-            height: 15.0,
-          ),
+          style.SizeSpace(15.0),
           //Falta realizar el ComboBox Dinamico.
           DropdownButtonFormField<String>(
             isExpanded: true,
@@ -159,9 +135,7 @@ class PageCreateExpense extends State<Expenses> {
               }
             },
           ),
-          SizedBox(
-            height: 30.0,
-          ),
+          style.SizeSpace(30.0),
           MaterialButton(
             minWidth: 150.0,
             height: 40.0,

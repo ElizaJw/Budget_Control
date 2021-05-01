@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:high_chart/high_chart.dart';
 import 'package:budget_control/pages/manageExpense.dart';
 import 'package:budget_control/pages/manageCategories.dart';
+import 'package:budget_control/pages/listItems.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -149,12 +150,16 @@ class _CounterPage extends State<HomePage> {
           children: <Widget>[
             IconButton(
               //update the bottom app bar view each time an item is clicked
-              onPressed: () {},
               iconSize: 27.0,
               icon: Icon(
-                Icons.home,
+                Icons.list,
                 //darken the icon if it is selected or else give it a different color
               ),
+              onPressed: () {
+                //Volver ir a la pantalla especificada
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => ListData()));
+              },
             ),
             IconButton(
               iconSize: 27.0,
