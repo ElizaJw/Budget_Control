@@ -5,15 +5,24 @@ import 'package:high_chart/high_chart.dart';
 import 'package:budget_control/pages/manageExpense.dart';
 import 'package:budget_control/pages/manageCategories.dart';
 import 'package:budget_control/pages/listItems.dart';
+import 'package:budget_control/src/LogicBalance.dart';
 
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _CounterPage();
 }
 
+String balance = "100000";
+
+assingNewValueCard(double value) {
+  balance = value.toString();
+}
+
 class _CounterPage extends State<HomePage> {
+  _CounterPage();
+
   String name = 'Elizabeth Gonzalez';
-  String balance = '100.000';
+  //String balance = "300000";
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +167,7 @@ class _CounterPage extends State<HomePage> {
               onPressed: () {
                 //Volver ir a la pantalla especificada
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => ListData()));
+                    .push(MaterialPageRoute(builder: (context) => ListItems()));
               },
             ),
             IconButton(
@@ -181,4 +190,8 @@ class _CounterPage extends State<HomePage> {
       color: Colors.white,
     );
   }
+}
+
+double getActualBalance() {
+  return double.parse(balance);
 }

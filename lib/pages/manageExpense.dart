@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:budget_control/Util/Utilities.dart';
 import 'package:date_field/date_field.dart';
 import 'package:budget_control/styles/styleForm.dart';
+import 'package:budget_control/src/LogicBalance.dart';
 
 class Expenses extends StatefulWidget {
   @override
@@ -19,7 +20,6 @@ class PageCreateExpense extends State<Expenses> {
   final _keyForm = GlobalKey<FormState>();
 
   Utilities util = new Utilities();
-
   List<String> categories = <String>[
     'Seleccionar categoría',
     'Ropa',
@@ -39,25 +39,10 @@ class PageCreateExpense extends State<Expenses> {
   Widget _body() {
     return Column(
       children: <Widget>[
-        _btnReturn(),
+        util.btnReturn(context),
         _formExpense(),
       ],
     );
-  }
-
-  Widget _btnReturn() {
-    return Container(
-        alignment: Alignment.bottomLeft,
-        padding: EdgeInsets.all(15),
-        child: FloatingActionButton(
-          onPressed: () {
-            //Go back to the specified screen
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => HomePage()));
-          },
-          backgroundColor: Colors.blueGrey,
-          child: Icon(Icons.keyboard_backspace),
-        ));
   }
 
   Widget _formExpense() {
@@ -147,6 +132,12 @@ class PageCreateExpense extends State<Expenses> {
                         "Valor Gastado : $_valorGastado \nDescripción: $_descripcion \nFecha: $_fecha \nCategoría: $_firstValue",
                     boton: "Ok");
                 _addExpense();
+                newBalance(
+                    getActualBalance(), double.parse(_valorGastado), "Egreso");
+                print("actual valor $getActualBalance()");
+                print("valor a gastar $_valorGastado");
+                //addBalance();
+                //assingNewValueCard(neww());
               }
             },
             color: Colors.lightBlue,

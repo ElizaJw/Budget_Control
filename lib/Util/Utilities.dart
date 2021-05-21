@@ -1,3 +1,4 @@
+import 'package:budget_control/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -48,5 +49,21 @@ class Utilities {
       textColor: Colors.white,
       fontSize: 16.0,
     );
+  }
+
+  @override
+  Widget btnReturn(BuildContext context) {
+    return Container(
+        alignment: Alignment.bottomLeft,
+        padding: EdgeInsets.all(15),
+        child: FloatingActionButton(
+          onPressed: () {
+            //Go back to the specified screen
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => HomePage()));
+          },
+          backgroundColor: Colors.blueGrey,
+          child: Icon(Icons.keyboard_backspace),
+        ));
   }
 }

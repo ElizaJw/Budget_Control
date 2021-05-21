@@ -28,26 +28,11 @@ class ManageCategories extends State<Catergories> {
   Widget _body() {
     return Column(
       children: <Widget>[
-        btnReturn(),
+        util.btnReturn(context),
         _formCategories(),
         _dataTableCategories(),
       ],
     );
-  }
-
-  Widget btnReturn() {
-    return Container(
-        padding: EdgeInsets.all(15),
-        alignment: Alignment.bottomLeft,
-        child: FloatingActionButton(
-          onPressed: () {
-            //Go back to the specified screen
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => HomePage()));
-          },
-          backgroundColor: Colors.blueGrey,
-          child: Icon(Icons.keyboard_backspace),
-        ));
   }
 
   Widget _formCategories() {

@@ -42,25 +42,10 @@ class PageCreateIncome extends State<Incomes> {
     return Column(
       //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        _btnReturn(),
+        util.btnReturn(context),
         _formIncome(),
       ],
     );
-  }
-
-  Widget _btnReturn() {
-    return Container(
-        alignment: Alignment.bottomLeft,
-        padding: EdgeInsets.all(15),
-        child: FloatingActionButton(
-          onPressed: () {
-            //Volver ir a la pantalla especificada
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => HomePage()));
-          },
-          backgroundColor: Colors.blueGrey,
-          child: Icon(Icons.keyboard_backspace),
-        ));
   }
 
   Widget _formIncome() {
@@ -178,20 +163,4 @@ class PageCreateIncome extends State<Incomes> {
         .catchError((error) =>
             util.showToast(context, mensaje: 'Error: $error', boton: 'Ok'));
   }
-
-  /*bool _validateButton() {
-    if (_valorIngresado.isEmpty) {
-      util.toastError('Debe agregar un valor');
-      return false;
-    } else if (_descripcion.isEmpty) {
-      util.toastError('Debe agregar una descripción');
-      return false;
-    } else if (_fecha == null) {
-      util.toastError('Debe agregar una fecha');
-      return false;
-    } else if (_firstValue == 'Seleccionar tipo ingreso') {
-      util.toastError('Debe agregar un tipo de ingreso');
-      return false;
-    }
-  }*/
 }
