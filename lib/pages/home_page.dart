@@ -1,33 +1,29 @@
 import 'package:budget_control/pages/manageIncomes.dart';
+import 'package:budget_control/src/LogicBalance.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:high_chart/high_chart.dart';
 import 'package:budget_control/pages/manageExpense.dart';
 import 'package:budget_control/pages/manageCategories.dart';
 import 'package:budget_control/pages/listItems.dart';
-import 'package:budget_control/src/LogicBalance.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _CounterPage();
 }
 
-String balance = "100000";
-
-assingNewValueCard(double value) {
-  balance = value.toString();
-}
-
 class _CounterPage extends State<HomePage> {
   _CounterPage();
 
   String name = 'Elizabeth Gonzalez';
-  //String balance = "300000";
 
   @override
   Widget build(BuildContext context) {
+    LogicBalance logic = Provider.of<LogicBalance>(context, listen: false);
+    String balance = logic.newValue.toString();
     return Scaffold(
-      body: _body(),
+      body: _body(balance),
       bottomNavigationBar: _menu(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -42,17 +38,17 @@ class _CounterPage extends State<HomePage> {
     );
   }
 
-  Widget _body() {
+  Widget _body(String balance) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        _balance(),
+        _balance(balance),
         _chart(),
       ],
     );
   }
 
-  Widget _balance() {
+  Widget _balance(String balance) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -190,8 +186,4 @@ class _CounterPage extends State<HomePage> {
       color: Colors.white,
     );
   }
-}
-
-double getActualBalance() {
-  return double.parse(balance);
 }

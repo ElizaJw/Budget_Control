@@ -5,6 +5,7 @@ import 'package:budget_control/Util/Utilities.dart';
 import 'package:date_field/date_field.dart';
 import 'package:budget_control/styles/styleForm.dart';
 import 'package:budget_control/src/LogicBalance.dart';
+import 'package:provider/provider.dart';
 
 class Expenses extends StatefulWidget {
   @override
@@ -13,12 +14,12 @@ class Expenses extends StatefulWidget {
 
 class PageCreateExpense extends State<Expenses> {
   StyleForm style = new StyleForm();
+  LogicBalance balan = new LogicBalance();
   var _valorGastado = "";
   var _descripcion = "";
   DateTime _fecha;
   var _firstValue = 'Seleccionar categoría';
   final _keyForm = GlobalKey<FormState>();
-  var _balance = getActualBalance();
 
   Utilities util = new Utilities();
   List<String> categories = <String>[
@@ -31,22 +32,24 @@ class PageCreateExpense extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    LogicBalance logic = Provider.of<LogicBalance>(context, listen: false);
+    double balance = logic.newValue;
     return Scaffold(
       backgroundColor: Color.fromRGBO(239, 240, 236, 3),
-      body: SingleChildScrollView(child: _body()),
+      body: SingleChildScrollView(child: _body(balance)),
     );
   }
 
-  Widget _body() {
+  Widget _body(double balance) {
     return Column(
       children: <Widget>[
         util.btnReturn(context),
-        _formExpense(),
+        _formExpense(balance),
       ],
     );
   }
 
-  Widget _formExpense() {
+  Widget _formExpense(double balance) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Form(
@@ -133,8 +136,8 @@ class PageCreateExpense extends State<Expenses> {
                         "Valor Gastado : $_valorGastado \nDescripción: $_descripcion \nFecha: $_fecha \nCategoría: $_firstValue",
                     boton: "Ok");
                 _addExpense();
-                newBalance(_balance, double.parse(_valorGastado), "Egreso");
-                print("actual valor $getActualBalance()");
+                balan.newBalance(
+                    balance, double.parse(_valorGastado), "Egreso");
                 print("valor a gastar $_valorGastado");
                 //addBalance();
               }
