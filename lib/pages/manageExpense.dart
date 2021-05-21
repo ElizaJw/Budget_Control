@@ -18,6 +18,7 @@ class PageCreateExpense extends State<Expenses> {
   DateTime _fecha;
   var _firstValue = 'Seleccionar categoría';
   final _keyForm = GlobalKey<FormState>();
+  var _balance = getActualBalance();
 
   Utilities util = new Utilities();
   List<String> categories = <String>[
@@ -132,12 +133,10 @@ class PageCreateExpense extends State<Expenses> {
                         "Valor Gastado : $_valorGastado \nDescripción: $_descripcion \nFecha: $_fecha \nCategoría: $_firstValue",
                     boton: "Ok");
                 _addExpense();
-                newBalance(
-                    getActualBalance(), double.parse(_valorGastado), "Egreso");
+                newBalance(_balance, double.parse(_valorGastado), "Egreso");
                 print("actual valor $getActualBalance()");
                 print("valor a gastar $_valorGastado");
                 //addBalance();
-                //assingNewValueCard(neww());
               }
             },
             color: Colors.lightBlue,
